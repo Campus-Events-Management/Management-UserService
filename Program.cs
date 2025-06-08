@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure Kestrel to use only HTTP
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.ListenAnyIP(5076); // Changed from port 5002 to 5003
+    serverOptions.ListenAnyIP(8765); // Using a high port number less likely to be in use
 });
 
 // Add HTTP logging
