@@ -15,8 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure Kestrel to use only HTTP
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    // Let the OS choose an available port
-    serverOptions.ListenAnyIP(0);
+    // Use specific port 32799
+    serverOptions.ListenAnyIP(32799);
     
     // Log the assigned port at startup
     serverOptions.ApplicationServices.GetService<IHostApplicationLifetime>()?.ApplicationStarted.Register(() => 
