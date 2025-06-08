@@ -2,8 +2,11 @@ using System.Text;
 using EventManagement.UserService.Data;
 using EventManagement.UserService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -12,7 +15,21 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure Kestrel to use only HTTP
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.ListenAnyIP(8765); // Using a high port number less likely to be in use
+    // Let the OS choose an available port
+    serverOptions.ListenAnyIP(0);
+    
+    // Log the assigned port at startup
+    serverOptions.ApplicationServices.GetService<IHostApplicationLifetime>()?.ApplicationStarted.Register(() => 
+    {
+        var addresses = serverOptions.ApplicationServices.GetService<IServer>()?.Features?.Get<IServerAddressesFeature>();
+        if (addresses != null)
+        {
+            foreach (var address in addresses.Addresses)
+            {
+                Console.WriteLine($"Now listening on: {address}");
+            }
+        }
+    });
 });
 
 // Add HTTP logging
