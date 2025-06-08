@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure Kestrel to use only HTTP
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.ListenAnyIP(5002); // Listen on port 5002 for HTTP
+    serverOptions.ListenAnyIP(5076); // Changed from port 5002 to 5003
 });
 
 // Add HTTP logging
@@ -106,7 +106,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:3000")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
